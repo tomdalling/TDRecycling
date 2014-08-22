@@ -11,23 +11,24 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
   s.default_subspec = 'Foundation'
+  s.header_mappings_dir = 'TDRecycling'
 
-  subspec 'Foundation' do |s_foundation|
-    s_foundation.public_header_files = 'Foundation/source/**/*.h'
-    s_foundation.source_files = 'Foundation/source/**/*.{h,m}'
+  s.subspec 'Foundation' do |s_foundation|
+    s_foundation.public_header_files = 'TDRecycling/Foundation/**/*.h'
+    s_foundation.source_files = 'TDRecycling/Foundation/**/*.{h,m}'
     s_foundation.frameworks = 'Foundation'
   end
 
-  subspec 'OSX' do |s_osx|
+  s.subspec 'OSX' do |s_osx|
     s_osx.platform = :osx
     s_osx.dependency 'TDRecycling/Foundation'
 
-    s_osx.public_header_files = 'OSX/source/**/*.h'
-    s_osx.source_files = 'OSX/source/**/*.{h,m}'
+    s_osx.public_header_files = 'TDRecycling/OSX/**/*.h'
+    s_osx.source_files = 'TDRecycling/OSX/**/*.{h,m}'
     s_osx.frameworks = 'Cocoa'
   end
 
-#  subspec 'iOS' do |s_ios|
+#  s.subspec 'iOS' do |s_ios|
 #    s_ios.platform = :ios
 #    s_ios.dependency = 'TDRecycling/Foundation'
 #
