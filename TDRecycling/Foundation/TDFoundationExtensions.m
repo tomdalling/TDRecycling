@@ -1,0 +1,274 @@
+//
+// Licensed under the terms in LICENSE.txt
+//
+// Copyright 2014 Tom Dalling. All rights reserved.
+//
+
+#import "TDFoundationExtensions.h"
+@import ObjectiveC.runtime;
+
+@implementation NSArray(TDFoundationExtensions)
+
+-(NSArray*) td_map:(id(^)(id object, NSUInteger idx))mapBlock
+{
+    NSMutableArray* mapped = [NSMutableArray arrayWithCapacity:self.count];
+    [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [mapped addObject:mapBlock(obj, idx)];
+    }];
+    return mapped;
+}
+
+-(NSArray*) td_filter:(BOOL(^)(id object, NSUInteger idx))filterBlock
+{
+    NSMutableIndexSet* matchedIndexes = [NSMutableIndexSet new];
+    [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if(filterBlock(obj, idx)){
+            [matchedIndexes addIndex:idx];
+        }
+    }];
+    return [self objectsAtIndexes:matchedIndexes];
+}
+
+-(NSArray*) td_filterAndMap:(id(^)(id object, NSUInteger idx))mapBlock
+{
+    NSMutableArray* result = [NSMutableArray array];
+    [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        id mapped = mapBlock(obj, idx);
+        if(mapped){
+            [result addObject:mapped];
+        }
+    }];
+    return result;
+}
+
+-(id) td_reduce:(id)accumulator with:(id(^)(id accumulator, id object, NSUInteger idx))reduceBlock {
+    __block id lastAccumulator = accumulator;
+    [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        lastAccumulator = reduceBlock(lastAccumulator, obj, idx);
+    }];
+    return lastAccumulator;
+}
+
+-(id) td_find:(BOOL(^)(id object))predicate
+{
+    for(id object in self){
+        if(predicate(object)){
+            return object;
+        }
+    }
+    return nil;
+}
+
+-(NSArray*) td_removeObjectsAtIndexes:(NSIndexSet*)indexes {
+    if(indexes.count == 0)
+        return self;
+
+    NSMutableIndexSet* remainingIdxs = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.count)];
+    [remainingIdxs removeIndexes:indexes];
+    return [self objectsAtIndexes:remainingIdxs];
+}
+
+-(NSArray*) td_mapObjectsAtIndexes:(NSIndexSet*)indexes with:(id(^)(id object, NSUInteger idx))mapBlock {
+    if(indexes.count == 0)
+        return self;
+
+    return [self td_map:^id(id object, NSUInteger idx) {
+        return [indexes containsIndex:idx] ? mapBlock(object, idx) : object;
+    }];
+}
+
+@end
+
+@implementation NSDictionary(TDFoundationExtensions)
+-(NSArray*) td_map:(id(^)(id key, id value))mapBlock {
+    NSMutableArray* mapped = [NSMutableArray arrayWithCapacity:self.count];
+    [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [mapped addObject:mapBlock(key, obj)];
+    }];
+    return mapped;
+}
+@end
+
+@implementation NSNotificationCenter(TDFoundationExtensions)
+
++ (void)postNotification:(NSNotification *)notification
+{
+    [[self defaultCenter] postNotification:notification];
+}
+
++ (void)postNotificationName:(NSString *)aName object:(id)anObject
+{
+    [[self defaultCenter] postNotificationName:aName object:anObject];
+}
+
++ (void)postNotificationName:(NSString *)aName object:(id)anObject userInfo:(NSDictionary *)aUserInfo
+{
+    [[self defaultCenter] postNotificationName:aName object:anObject userInfo:aUserInfo];
+}
+
+@end
+
+
+@interface TDRememberedObservation : NSObject
+@property(retain) NSString* notificationName;
+@property(assign) id notificationObject;
+@property(retain) id observer;
+@end
+@implementation TDRememberedObservation
+@end
+
+
+@implementation NSObject(TDFoundationExtensions)
+
+static void* const TDNotiObservationListKey = (void*const)&TDNotiObservationListKey;
+
+-(NSMutableArray*) _td_notiObservationList
+{
+    NSMutableArray* list = objc_getAssociatedObject(self, TDNotiObservationListKey);
+    if(!list){
+        list = [NSMutableArray new];
+        objc_setAssociatedObject(self, TDNotiObservationListKey, list, OBJC_ASSOCIATION_RETAIN);
+    }
+    return list;
+}
+
+- (id) td_observeNotificationsNamed:(NSString*)name usingBlock:(void (^)(NSNotification *noti))block
+{
+    return [self td_observeNotificationsNamed:name fromObject:nil usingBlock:block];
+}
+
+- (id) td_observeNotificationsNamed:(NSString*)name fromObject:(id)notiSource usingBlock:(void (^)(NSNotification *noti))block
+{
+    TDRememberedObservation* remembered = [TDRememberedObservation new];
+    remembered.notificationName = name;
+    remembered.notificationObject = notiSource;
+    remembered.observer = [[NSNotificationCenter defaultCenter] addObserverForName:name
+                                                                            object:notiSource
+                                                                             queue:nil
+                                                                        usingBlock:block];
+    [[self _td_notiObservationList] addObject:remembered];
+    return remembered;
+}
+
+-(void) td_stopObserving:(id)observation
+{
+    NSParameterAssert([observation isKindOfClass:[TDRememberedObservation class]]);
+    TDRememberedObservation* remembered = (TDRememberedObservation*)observation;
+    [[NSNotificationCenter defaultCenter] removeObserver:remembered.observer];
+    [[self _td_notiObservationList] removeObject:remembered];
+}
+
+- (void) td_stopObservingNotificationsNamed:(NSString*)name
+{
+    [self _td_stopObservingWithFilter:^BOOL(TDRememberedObservation *remembered, NSUInteger idx) {
+        return [remembered.notificationName isEqualToString:name];
+    }];
+}
+
+- (void) td_stopObservingNotificationsNamed:(NSString*)name fromObject:(id)notiSource
+{
+    [self _td_stopObservingWithFilter:^BOOL(TDRememberedObservation *remembered, NSUInteger idx) {
+        return ([remembered.notificationName isEqualToString:name] &&
+                (remembered.notificationObject == notiSource));
+    }];
+}
+
+- (void) td_stopObservingAllNotifications
+{
+    [self _td_stopObservingWithFilter:^BOOL(TDRememberedObservation *remembered, NSUInteger idx) {
+        return YES;
+    }];
+}
+
+-(void) _td_stopObservingWithFilter:(BOOL(^)(TDRememberedObservation* remembered, NSUInteger idx))filterBlock
+{
+    for(TDRememberedObservation* remembered in [[self _td_notiObservationList] td_filter:filterBlock])
+        [self td_stopObserving:remembered];
+}
+
+@end
+
+
+@implementation NSError(TDFoundationExtensions)
+
+static NSString* const TDErrorDomain = @"TDErrorDomain";
+
++(instancetype) td_errorWithDescription:(NSString*)description
+{
+    return [self td_errorWithDescription:description failureReason:nil];
+}
+
++(instancetype) td_errorWithDescription:(NSString*)description failureReason:(NSString*)failureReason;
+{
+    NSMutableDictionary* userInfo = [NSMutableDictionary new];
+    if(description)
+        [userInfo setObject:description forKey:NSLocalizedDescriptionKey];
+    if(failureReason)
+        [userInfo setObject:failureReason forKey:NSLocalizedFailureReasonErrorKey];
+
+    return [[self class] errorWithDomain:TDErrorDomain
+                                    code:0
+                                userInfo:userInfo];
+}
+
+@end
+
+void TDFillError(NSError** outError, NSString* description, NSString* failureReason) {
+    if(outError){
+        *outError = [NSError td_errorWithDescription:description failureReason:failureReason];
+    }
+}
+
+
+@implementation NSString(TDFoundationExtensions)
+
+-(NSString*) td_fromCamelToHyphenated
+{
+    if(self.length == 0)
+        return self;
+
+    NSMutableArray* segments = [NSMutableArray array];
+    NSScanner* scanner = [NSScanner scannerWithString:self];
+    NSCharacterSet* uppercase = [NSCharacterSet uppercaseLetterCharacterSet];
+    while(!scanner.isAtEnd){
+        NSString* segmentHead = nil;
+        NSString* segmentTail = nil;
+        [scanner scanCharactersFromSet:uppercase intoString:&segmentHead];
+        [scanner scanUpToCharactersFromSet:uppercase intoString:&segmentTail];
+        NSParameterAssert(segmentHead.length > 0);
+
+        NSString* segment = [[segmentHead lowercaseString] stringByAppendingString:segmentTail];
+        [segments addObject:segment];
+    }
+
+    return [segments componentsJoinedByString:@"-"];
+}
+
+-(NSString*) td_fromHyphenatedToCamel
+{
+    NSMutableString* output = [NSMutableString string];
+    NSScanner* scanner = [NSScanner scannerWithString:self];
+    while(!scanner.isAtEnd){
+        NSString* segment = nil;
+        BOOL foundSegment = [scanner scanUpToString:@"-" intoString:&segment];
+        NSParameterAssert(foundSegment);
+        [output appendString:[[segment substringToIndex:1] uppercaseString]];
+        [output appendString:[segment substringFromIndex:1]];
+        [scanner scanString:@"-" intoString:NULL];
+    }
+    return output;
+}
+
+@end
+
+@implementation NSDateFormatter(TDFoundationExtensions)
+
++(instancetype) td_iso8601DateFormatter
+{
+    NSDateFormatter* df = [NSDateFormatter new];
+    [df setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+    [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'SSSZZZZZ"];
+    return df;
+}
+
+@end

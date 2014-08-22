@@ -1,0 +1,70 @@
+//
+// Licensed under the terms in LICENSE.txt
+//
+// Copyright 2014 Tom Dalling. All rights reserved.
+//
+
+@import Foundation;
+
+@interface NSArray(TDFoundationExtensions)
+-(NSArray*) td_map:(id(^)(id object, NSUInteger idx))mapBlock;
+-(NSArray*) td_filter:(BOOL(^)(id object, NSUInteger idx))filterBlock;
+-(NSArray*) td_filterAndMap:(id(^)(id object, NSUInteger idx))mapBlock;
+-(id) td_reduce:(id)accumulator with:(id(^)(id accumulator, id object, NSUInteger idx))reduceBlock;
+-(id) td_find:(BOOL(^)(id object))predicate;
+-(NSArray*) td_removeObjectsAtIndexes:(NSIndexSet*)indexes;
+-(NSArray*) td_mapObjectsAtIndexes:(NSIndexSet*)indexes with:(id(^)(id object, NSUInteger idx))mapBlock;
+@end
+
+@interface NSDictionary(TDFoundationExtensions)
+-(NSArray*) td_map:(id(^)(id key, id value))mapBlock;
+@end
+
+@interface NSObject(TDFoundationExtensions)
+- (id) td_observeNotificationsNamed:(NSString*)name usingBlock:(void (^)(NSNotification *noti))block;
+- (id) td_observeNotificationsNamed:(NSString*)name fromObject:(id)notiSource usingBlock:(void (^)(NSNotification *noti))block;
+- (void) td_stopObserving:(id)observation;
+- (void) td_stopObservingNotificationsNamed:(NSString*)name;
+- (void) td_stopObservingNotificationsNamed:(NSString*)name fromObject:(id)notiSource;
+- (void) td_stopObservingAllNotifications;
+@end
+
+@interface NSError(TDFoundationExtensions)
++(instancetype) td_errorWithDescription:(NSString*)description;
++(instancetype) td_errorWithDescription:(NSString*)description failureReason:(NSString*)failureReason;
+@end
+
+void TDFillError(NSError** outError, NSString* description, NSString* failureReason);
+
+@interface NSString(TDFoundationExtensions)
+-(NSString*) td_fromCamelToHyphenated;
+-(NSString*) td_fromHyphenatedToCamel;
+@end
+
+@interface NSDateFormatter(TDFoundationExtensions)
++(instancetype) td_iso8601DateFormatter;
+@end
+
+#define TDMin(a,b) ({ \
+    __typeof__(a) _a = (a); \
+    __typeof__(b) _b = (b); \
+    _a < _b ? _a : _b; \
+})
+
+#define TDMax(a,b) ({ \
+    __typeof__(a) _a = (a); \
+    __typeof__(b) _b = (b); \
+    _a > _b ? _a : _b; \
+})
+
+#define TDClamp(x, xmin, xmax) ({ \
+    __typeof__(x) _x = (x); \
+    __typeof__(xmin) _xmin = (xmin); \
+    __typeof__(xmax) _xmax = (xmax); \
+    _x < _xmin ? _xmin : (_x > _xmax ? _xmax : _x); \
+})
+
+#define TDOr(a, b) ({ \
+    __typeof__(a) _a = (a); \
+    _a ? _a : (b); \
+})
