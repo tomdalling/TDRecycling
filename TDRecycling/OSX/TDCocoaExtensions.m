@@ -5,6 +5,7 @@
 //
 
 #import "TDCocoaExtensions.h"
+#import <TDRecycling/Foundation/All.h>
 
 @implementation NSMenu(TDCocoaExtensions)
 +(NSMenu*) td_menuWithItems:(NSArray*)items {
@@ -14,5 +15,17 @@
     }
     return menu;
 }
+
+-(NSMenuItem*) td_itemWithRepresentedObject:(id)representedObject {
+    return [self.itemArray td_find:^BOOL(NSMenuItem* item) {
+        return (item.representedObject == representedObject ||
+                [item.representedObject isEqual:representedObject]);
+    }];
+}
 @end
 
+@implementation NSPopUpButton(TDCocoaExtensions)
+-(void) td_selectItemWithRepresentedObject:(id)representedObject {
+    [self selectItem:[self.menu td_itemWithRepresentedObject:representedObject]];
+}
+@end

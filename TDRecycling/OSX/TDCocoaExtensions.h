@@ -8,4 +8,9 @@
 
 @interface NSMenu(TDCocoaExtensions)
 +(NSMenu*) td_menuWithItems:(NSArray*)items;
+-(NSMenuItem*) td_itemWithRepresentedObject:(id)representedObject;
+@end
+
+@interface NSPopUpButton(TDCocoaExtensions)
+-(void) td_selectItemWithRepresentedObject:(id)representedObject;
 @end
