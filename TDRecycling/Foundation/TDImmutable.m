@@ -7,9 +7,9 @@
 #import "TDImmutable.h"
 @import ObjectiveC.runtime;
 
-static void* const SJPropertiesDictKey = (void* const)&SJPropertiesDictKey;
+static void* const TDPropertiesDictKey = (void* const)&TDPropertiesDictKey;
 
-static void SJBuildSingleProperty(objc_property_t property,  NSMutableDictionary* propertiesDict, Class klass){
+static void TDBuildSingleProperty(objc_property_t property,  NSMutableDictionary* propertiesDict, Class klass){
     const char* name = property_getName(property);
     char* type = property_copyAttributeValue(property, "T");
     char* readonly = property_copyAttributeValue(property, "R");
@@ -30,7 +30,7 @@ static void SJBuildSingleProperty(objc_property_t property,  NSMutableDictionary
         free(readonly);
 }
 
-static NSDictionary* SJBuildPropertiesDict(Class klass) {
+static NSDictionary* TDBuildPropertiesDict(Class klass) {
     NSMutableDictionary* propertiesDict = [NSMutableDictionary new];
 
     Class nextClass = klass;
@@ -39,7 +39,7 @@ static NSDictionary* SJBuildPropertiesDict(Class klass) {
         objc_property_t* propertyList = class_copyPropertyList(nextClass, &propertyCount);
 
         for(unsigned int i = 0; i < propertyCount; ++i){
-            SJBuildSingleProperty(propertyList[i], propertiesDict, klass);
+            TDBuildSingleProperty(propertyList[i], propertiesDict, klass);
         }
 
         if(propertyList)
@@ -51,7 +51,7 @@ static NSDictionary* SJBuildPropertiesDict(Class klass) {
     return propertiesDict;
 }
 
-static NSDictionary* SJDictMerge(NSDictionary* into, NSDictionary* from) {
+static NSDictionary* TDDictMerge(NSDictionary* into, NSDictionary* from) {
     if(into.count == 0)
         return from;
 
@@ -66,7 +66,7 @@ static NSDictionary* SJDictMerge(NSDictionary* into, NSDictionary* from) {
 
 -(id) initWithProperties:(NSDictionary*)properties {
     if((self = [super init])){
-        NSDictionary* propsWithDefaults = SJDictMerge(self.class.defaultProperties, properties);
+        NSDictionary* propsWithDefaults = TDDictMerge(self.class.defaultProperties, properties);
         [propsWithDefaults enumerateKeysAndObjectsUsingBlock:^(NSString* property, id value, BOOL *stop) {
             [self _setProperty:property toValue:value];
         }];
@@ -107,7 +107,7 @@ static NSDictionary* SJDictMerge(NSDictionary* into, NSDictionary* from) {
 }
 
 -(instancetype) withProperties:(NSDictionary*)changedProperties {
-    return [[[self class] alloc] initWithProperties:SJDictMerge(self.properties, changedProperties)];
+    return [[[self class] alloc] initWithProperties:TDDictMerge(self.properties, changedProperties)];
 }
 
 -(instancetype) withPropertiesAndValues:(id)firstPropertyName, ... {
@@ -140,7 +140,7 @@ static NSDictionary* SJDictMerge(NSDictionary* into, NSDictionary* from) {
 }
 
 -(NSDictionary*) _propertiesDict {
-    return objc_getAssociatedObject(self.class, SJPropertiesDictKey);
+    return objc_getAssociatedObject(self.class, TDPropertiesDictKey);
 }
 
 +(NSDictionary*) _propertiesFromVarArgs:(NSString*)firstPropertyName args:(va_list)args {
@@ -170,7 +170,7 @@ static NSDictionary* SJDictMerge(NSDictionary* into, NSDictionary* from) {
 
 +(void) initialize {
     if(self != [TDImmutable self]){
-        objc_setAssociatedObject(self, SJPropertiesDictKey, SJBuildPropertiesDict(self), OBJC_ASSOCIATION_RETAIN);
+        objc_setAssociatedObject(self, TDPropertiesDictKey, TDBuildPropertiesDict(self), OBJC_ASSOCIATION_RETAIN);
     }
 }
 
