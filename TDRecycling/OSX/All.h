@@ -7,3 +7,4 @@
 #import <Cocoa/Cocoa.h>
 #import <TDRecycling/Foundation/All.h>
 #import "TDCocoaExtensions.h"
+#import "TDNinePart.h"

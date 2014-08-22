@@ -28,6 +28,8 @@
 		E26BE1EE19A7168F003CB6E4 /* TDImmutableTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E26BE1DC19A71680003CB6E4 /* TDImmutableTests.m */; };
 		E26BE1EF19A7168F003CB6E4 /* TDUnbufferedChannelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E26BE1DD19A71680003CB6E4 /* TDUnbufferedChannelTests.m */; };
 		E26BE1F019A71693003CB6E4 /* TDCocoaExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E26BE1DF19A71680003CB6E4 /* TDCocoaExtensionsTests.m */; };
+		E26BE1F319A726E9003CB6E4 /* TDNinePart.h in Headers */ = {isa = PBXBuildFile; fileRef = E26BE1F119A726E9003CB6E4 /* TDNinePart.h */; };
+		E26BE1F419A726E9003CB6E4 /* TDNinePart.m in Sources */ = {isa = PBXBuildFile; fileRef = E26BE1F219A726E9003CB6E4 /* TDNinePart.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,8 @@
 		E26BE1DC19A71680003CB6E4 /* TDImmutableTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDImmutableTests.m; sourceTree = "<group>"; };
 		E26BE1DD19A71680003CB6E4 /* TDUnbufferedChannelTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDUnbufferedChannelTests.m; sourceTree = "<group>"; };
 		E26BE1DF19A71680003CB6E4 /* TDCocoaExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDCocoaExtensionsTests.m; sourceTree = "<group>"; };
+		E26BE1F119A726E9003CB6E4 /* TDNinePart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNinePart.h; sourceTree = "<group>"; };
+		E26BE1F219A726E9003CB6E4 /* TDNinePart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNinePart.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +172,8 @@
 				E26BE1D519A71680003CB6E4 /* All.h */,
 				E26BE1D619A71680003CB6E4 /* TDCocoaExtensions.h */,
 				E26BE1D719A71680003CB6E4 /* TDCocoaExtensions.m */,
+				E26BE1F119A726E9003CB6E4 /* TDNinePart.h */,
+				E26BE1F219A726E9003CB6E4 /* TDNinePart.m */,
 			);
 			path = OSX;
 			sourceTree = "<group>";
@@ -221,6 +227,7 @@
 			files = (
 				E26BE1EA19A7168A003CB6E4 /* TDCocoaExtensions.h in Headers */,
 				E26BE1E919A7168A003CB6E4 /* All.h in Headers */,
+				E26BE1F319A726E9003CB6E4 /* TDNinePart.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +398,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E26BE1F419A726E9003CB6E4 /* TDNinePart.m in Sources */,
 				E26BE1EB19A7168A003CB6E4 /* TDCocoaExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
