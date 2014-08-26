@@ -39,6 +39,7 @@
 - (void) td_stopObservingNotificationsNamed:(NSString*)name;
 - (void) td_stopObservingNotificationsNamed:(NSString*)name fromObject:(id)notiSource;
 - (void) td_stopObservingAllNotifications;
+- (void) td_postNotificationNamed:(NSString*)name userInfo:(NSDictionary*)userInfo;
 @end
 
 @interface NSError(TDFoundationExtensions)

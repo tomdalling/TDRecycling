@@ -229,6 +229,12 @@ static void* const TDNotiObservationListKey = (void*const)&TDNotiObservationList
     }];
 }
 
+- (void) td_postNotificationNamed:(NSString*)name userInfo:(NSDictionary*)userInfo {
+    [[NSNotificationCenter defaultCenter] postNotificationName:name
+                                                        object:self
+                                                      userInfo:userInfo];
+}
+
 -(void) _td_stopObservingWithFilter:(BOOL(^)(TDRememberedObservation* remembered, NSUInteger idx))filterBlock
 {
     for(TDRememberedObservation* remembered in [[self _td_notiObservationList] td_filter:filterBlock])
