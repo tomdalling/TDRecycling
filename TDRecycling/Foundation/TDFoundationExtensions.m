@@ -51,12 +51,34 @@
 
 -(id) td_find:(BOOL(^)(id object))predicate
 {
-    for(id object in self){
-        if(predicate(object)){
-            return object;
+    NSUInteger idx = [self td_findIndex:predicate];
+    return (idx == NSNotFound ? nil : [self objectAtIndex:idx]);
+}
+
+-(id) td_findWhereKey:(NSString*)key equals:(id)value
+{
+    NSUInteger idx = [self td_findIndexWhereKey:key equals:value];
+    return (idx == NSNotFound ? nil : [self objectAtIndex:idx]);
+}
+
+-(NSUInteger) td_findIndex:(BOOL(^)(id object))predicate {
+    __block NSUInteger foundIdx = NSNotFound;
+
+    [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if(predicate(obj)){
+            foundIdx = idx;
+            *stop = YES;
         }
-    }
-    return nil;
+    }];
+
+    return foundIdx;
+}
+
+-(NSUInteger) td_findIndexWhereKey:(NSString*)key equals:(id)value {
+    return [self td_findIndex:^BOOL(id object) {
+        id thisValue = [object valueForKey:key];
+        return (thisValue == value || [thisValue isEqual:value]);
+    }];
 }
 
 -(NSArray*) td_removeObjectsAtIndexes:(NSIndexSet*)indexes {
@@ -68,6 +90,10 @@
     return [self objectsAtIndexes:remainingIdxs];
 }
 
+-(NSArray*) td_removeObjectAtIndex:(NSUInteger)idx {
+    return [self td_removeObjectsAtIndexes:[NSIndexSet indexSetWithIndex:idx]];
+}
+
 -(NSArray*) td_mapObjectsAtIndexes:(NSIndexSet*)indexes with:(id(^)(id object, NSUInteger idx))mapBlock {
     if(indexes.count == 0)
         return self;
@@ -75,6 +101,29 @@
     return [self td_map:^id(id object, NSUInteger idx) {
         return [indexes containsIndex:idx] ? mapBlock(object, idx) : object;
     }];
+}
+
+-(NSArray*) td_mapObjectAtIndex:(NSUInteger)idx with:(id(^)(id object, NSUInteger idx))mapBlock {
+    return [self td_mapObjectsAtIndexes:[NSIndexSet indexSetWithIndex:idx] with:mapBlock];
+}
+
+-(NSArray*) td_replaceObjectsAtIndexes:(NSIndexSet*)indexes with:(NSArray*)replacements {
+    NSParameterAssert(indexes.count == replacements.count);
+
+    NSMutableArray* result = [self mutableCopy];
+
+    for(NSUInteger idx = [indexes firstIndex], replacementIdx = 0;
+        idx != NSNotFound;
+        idx = [indexes indexGreaterThanIndex:idx], ++replacementIdx)
+    {
+        result[idx] = replacements[replacementIdx];
+    }
+
+    return result;
+}
+
+-(NSArray*) td_replaceObjectAtIndex:(NSUInteger)idx with:(id)replacement {
+    return [self td_replaceObjectsAtIndexes:[NSIndexSet indexSetWithIndex:idx] with:@[replacement]];
 }
 
 @end

@@ -8,12 +8,24 @@
 
 @interface NSArray(TDFoundationExtensions)
 -(NSArray*) td_map:(id(^)(id object, NSUInteger idx))mapBlock;
+-(NSArray*) td_mapObjectsAtIndexes:(NSIndexSet*)indexes with:(id(^)(id object, NSUInteger idx))mapBlock;
+-(NSArray*) td_mapObjectAtIndex:(NSUInteger)idx with:(id(^)(id object, NSUInteger idx))mapBlock;
+
 -(NSArray*) td_filter:(BOOL(^)(id object, NSUInteger idx))filterBlock;
 -(NSArray*) td_filterAndMap:(id(^)(id object, NSUInteger idx))mapBlock;
+
 -(id) td_reduce:(id)accumulator with:(id(^)(id accumulator, id object, NSUInteger idx))reduceBlock;
+
 -(id) td_find:(BOOL(^)(id object))predicate;
+-(id) td_findWhereKey:(NSString*)key equals:(id)value;
+-(NSUInteger) td_findIndex:(BOOL(^)(id object))predicate;
+-(NSUInteger) td_findIndexWhereKey:(NSString*)key equals:(id)value;
+
 -(NSArray*) td_removeObjectsAtIndexes:(NSIndexSet*)indexes;
--(NSArray*) td_mapObjectsAtIndexes:(NSIndexSet*)indexes with:(id(^)(id object, NSUInteger idx))mapBlock;
+-(NSArray*) td_removeObjectAtIndex:(NSUInteger)idx;
+
+-(NSArray*) td_replaceObjectsAtIndexes:(NSIndexSet*)indexes with:(NSArray*)replacements;
+-(NSArray*) td_replaceObjectAtIndex:(NSUInteger)idx with:(id)replacement;
 @end
 
 @interface NSDictionary(TDFoundationExtensions)
