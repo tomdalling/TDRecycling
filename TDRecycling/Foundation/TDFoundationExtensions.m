@@ -9,7 +9,14 @@
 
 @implementation NSArray(TDFoundationExtensions)
 
--(NSArray*) td_map:(id(^)(id object, NSUInteger idx))mapBlock
+-(NSArray*) td_map:(id(^)(id object))mapBlock
+{
+    return [self td_mapWithIndex:^id(id object, NSUInteger idx) {
+        return mapBlock(object);
+    }];
+}
+
+-(NSArray*) td_mapWithIndex:(id(^)(id object, NSUInteger idx))mapBlock
 {
     NSMutableArray* mapped = [NSMutableArray arrayWithCapacity:self.count];
     [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -18,7 +25,14 @@
     return mapped;
 }
 
--(NSArray*) td_filter:(BOOL(^)(id object, NSUInteger idx))filterBlock
+-(NSArray*) td_filter:(BOOL(^)(id object))filterBlock
+{
+    return [self td_filterWithIndex:^BOOL(id object, NSUInteger idx) {
+        return filterBlock(object);
+    }];
+}
+
+-(NSArray*) td_filterWithIndex:(BOOL(^)(id object, NSUInteger idx))filterBlock
 {
     NSMutableIndexSet* matchedIndexes = [NSMutableIndexSet new];
     [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -98,13 +112,15 @@
     if(indexes.count == 0)
         return self;
 
-    return [self td_map:^id(id object, NSUInteger idx) {
+    return [self td_mapWithIndex:^id(id object, NSUInteger idx) {
         return [indexes containsIndex:idx] ? mapBlock(object, idx) : object;
     }];
 }
 
--(NSArray*) td_mapObjectAtIndex:(NSUInteger)idx with:(id(^)(id object, NSUInteger idx))mapBlock {
-    return [self td_mapObjectsAtIndexes:[NSIndexSet indexSetWithIndex:idx] with:mapBlock];
+-(NSArray*) td_mapObjectAtIndex:(NSUInteger)idx with:(id(^)(id object))mapBlock {
+    NSMutableArray* result = [self mutableCopy];
+    result[idx] = mapBlock([self objectAtIndex:idx]);
+    return result;
 }
 
 -(NSArray*) td_replaceObjectsAtIndexes:(NSIndexSet*)indexes with:(NSArray*)replacements {
@@ -209,14 +225,14 @@ static void* const TDNotiObservationListKey = (void*const)&TDNotiObservationList
 
 - (void) td_stopObservingNotificationsNamed:(NSString*)name
 {
-    [self _td_stopObservingWithFilter:^BOOL(TDRememberedObservation *remembered, NSUInteger idx) {
+    [self _td_stopObservingWithFilter:^BOOL(TDRememberedObservation *remembered) {
         return [remembered.notificationName isEqualToString:name];
     }];
 }
 
 - (void) td_stopObservingNotificationsNamed:(NSString*)name fromObject:(id)notiSource
 {
-    [self _td_stopObservingWithFilter:^BOOL(TDRememberedObservation *remembered, NSUInteger idx) {
+    [self _td_stopObservingWithFilter:^BOOL(TDRememberedObservation *remembered) {
         return ([remembered.notificationName isEqualToString:name] &&
                 (remembered.notificationObject == notiSource));
     }];
@@ -224,7 +240,7 @@ static void* const TDNotiObservationListKey = (void*const)&TDNotiObservationList
 
 - (void) td_stopObservingAllNotifications
 {
-    [self _td_stopObservingWithFilter:^BOOL(TDRememberedObservation *remembered, NSUInteger idx) {
+    [self _td_stopObservingWithFilter:^BOOL(TDRememberedObservation *remembered) {
         return YES;
     }];
 }
@@ -235,7 +251,7 @@ static void* const TDNotiObservationListKey = (void*const)&TDNotiObservationList
                                                       userInfo:userInfo];
 }
 
--(void) _td_stopObservingWithFilter:(BOOL(^)(TDRememberedObservation* remembered, NSUInteger idx))filterBlock
+-(void) _td_stopObservingWithFilter:(BOOL(^)(TDRememberedObservation* remembered))filterBlock
 {
     for(TDRememberedObservation* remembered in [[self _td_notiObservationList] td_filter:filterBlock])
         [self td_stopObserving:remembered];

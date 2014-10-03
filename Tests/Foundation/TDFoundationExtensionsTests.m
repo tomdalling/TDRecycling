@@ -14,7 +14,7 @@
 - (void)testMap {
     NSArray* input = @[@11, @12, @13];
     NSArray* expected = @[@"11", @"12", @"13"];
-    NSArray* actual = [input td_map:^id(NSNumber* n, NSUInteger idx) {
+    NSArray* actual = [input td_map:^id(NSNumber* n) {
         return [n stringValue];
     }];
 
@@ -24,7 +24,7 @@
 - (void)testFilter {
     NSArray* input = @[@1, @2, @3, @4, @5, @6];
     NSArray* expected = @[@2, @4, @6];
-    NSArray* actual = [input td_filter:^BOOL(NSNumber* n, NSUInteger idx) {
+    NSArray* actual = [input td_filter:^BOOL(NSNumber* n) {
         return (n.integerValue % 2 == 0);
     }];
 

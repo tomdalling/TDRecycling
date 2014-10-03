@@ -7,11 +7,13 @@
 @import Foundation;
 
 @interface NSArray(TDFoundationExtensions)
--(NSArray*) td_map:(id(^)(id object, NSUInteger idx))mapBlock;
+-(NSArray*) td_map:(id(^)(id object))mapBlock;
+-(NSArray*) td_mapWithIndex:(id(^)(id object, NSUInteger idx))mapBlock;
 -(NSArray*) td_mapObjectsAtIndexes:(NSIndexSet*)indexes with:(id(^)(id object, NSUInteger idx))mapBlock;
--(NSArray*) td_mapObjectAtIndex:(NSUInteger)idx with:(id(^)(id object, NSUInteger idx))mapBlock;
+-(NSArray*) td_mapObjectAtIndex:(NSUInteger)idx with:(id(^)(id object))mapBlock;
 
--(NSArray*) td_filter:(BOOL(^)(id object, NSUInteger idx))filterBlock;
+-(NSArray*) td_filter:(BOOL(^)(id object))filterBlock;
+-(NSArray*) td_filterWithIndex:(BOOL(^)(id object, NSUInteger idx))filterBlock;
 -(NSArray*) td_filterAndMap:(id(^)(id object, NSUInteger idx))mapBlock;
 
 -(id) td_reduce:(id)accumulator with:(id(^)(id accumulator, id object, NSUInteger idx))reduceBlock;
