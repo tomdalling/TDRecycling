@@ -34,7 +34,7 @@ static NSDictionary* TDBuildPropertiesDict(Class klass) {
     NSMutableDictionary* propertiesDict = [NSMutableDictionary new];
 
     Class nextClass = klass;
-    while(nextClass){
+    while(nextClass && [nextClass isSubclassOfClass:[TDImmutable class]]){
         unsigned int propertyCount = 0;
         objc_property_t* propertyList = class_copyPropertyList(nextClass, &propertyCount);
 
