@@ -55,6 +55,30 @@
     return result;
 }
 
+-(BOOL) td_any:(BOOL(^)(id object))predicate
+{
+    __block BOOL any = NO;
+    [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if(predicate(obj)){
+            any = YES;
+            *stop = YES;
+        }
+    }];
+    return any;
+}
+
+-(BOOL) td_every:(BOOL(^)(id object))predicate
+{
+    __block BOOL every = YES;
+    [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if(!predicate(obj)){
+            every = NO;
+            *stop = YES;
+        }
+    }];
+    return every;
+}
+
 -(id) td_reduce:(id)accumulator with:(id(^)(id accumulator, id object, NSUInteger idx))reduceBlock {
     __block id lastAccumulator = accumulator;
     [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

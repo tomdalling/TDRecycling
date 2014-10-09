@@ -16,6 +16,9 @@
 -(NSArray*) td_filterWithIndex:(BOOL(^)(id object, NSUInteger idx))filterBlock;
 -(NSArray*) td_filterAndMap:(id(^)(id object, NSUInteger idx))mapBlock;
 
+-(BOOL) td_any:(BOOL(^)(id object))predicate;
+-(BOOL) td_every:(BOOL(^)(id object))predicate;
+
 -(id) td_reduce:(id)accumulator with:(id(^)(id accumulator, id object, NSUInteger idx))reduceBlock;
 
 -(id) td_find:(BOOL(^)(id object))predicate;
