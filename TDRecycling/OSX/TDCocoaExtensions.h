@@ -14,3 +14,7 @@
 @interface NSPopUpButton(TDCocoaExtensions)
 -(void) td_selectItemWithRepresentedObject:(id)representedObject;
 @end
+
+@interface NSColor(TDCocoaExtensions)
++(instancetype) td_fromHex:(NSString*)hex;
+@end

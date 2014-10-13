@@ -29,3 +29,26 @@
     [self selectItem:[self.menu td_itemWithRepresentedObject:representedObject]];
 }
 @end
+
+@implementation NSColor(TDCocoaExtensions)
++(instancetype) td_fromHex:(NSString*)hex {
+    if(hex.length == 7)
+        hex = [hex substringFromIndex:1]; //chop off leading # character
+
+    NSParameterAssert(hex.length == 6);
+
+    NSString* rs = [hex substringWithRange:NSMakeRange(0, 2)];
+    NSString* gs = [hex substringWithRange:NSMakeRange(2, 2)];
+    NSString* bs = [hex substringWithRange:NSMakeRange(4, 2)];
+
+    int r,g,b;
+    sscanf(rs.UTF8String, "%x", &r);
+    sscanf(gs.UTF8String, "%x", &g);
+    sscanf(bs.UTF8String, "%x", &b);
+
+    return [NSColor colorWithDeviceRed:((double)r)/255.0
+                                 green:((double)g)/255.0
+                                  blue:((double)b)/255.0
+                                 alpha:1.0];
+}
+@end
