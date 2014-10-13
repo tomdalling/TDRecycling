@@ -209,6 +209,13 @@
 
 @implementation NSObject(TDFoundationExtensions)
 
+- (id) td_setProperties:(NSDictionary*)properties {
+    [properties enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self setValue:obj forKey:key];
+    }];
+    return self;
+}
+
 static void* const TDNotiObservationListKey = (void*const)&TDNotiObservationListKey;
 
 -(NSMutableArray*) _td_notiObservationList

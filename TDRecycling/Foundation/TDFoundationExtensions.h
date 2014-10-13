@@ -38,6 +38,7 @@
 @end
 
 @interface NSObject(TDFoundationExtensions)
+- (id) td_setProperties:(NSDictionary*)properties;
 - (id) td_observeNotificationsNamed:(NSString*)name usingBlock:(void (^)(NSNotification *noti))block;
 - (id) td_observeNotificationsNamed:(NSString*)name fromObject:(id)notiSource usingBlock:(void (^)(NSNotification *noti))block;
 - (void) td_stopObserving:(id)observation;
