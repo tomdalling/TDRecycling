@@ -313,6 +313,13 @@ static NSString* const TDErrorDomain = @"TDErrorDomain";
                                 userInfo:userInfo];
 }
 
++(instancetype) td_userCancelledError
+{
+    return [NSError errorWithDomain:NSCocoaErrorDomain
+                               code:NSUserCancelledError
+                           userInfo:nil];
+}
+
 @end
 
 void TDFillError(NSError** outError, NSString* description, NSString* failureReason) {

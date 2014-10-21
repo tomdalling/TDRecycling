@@ -51,6 +51,7 @@
 @interface NSError(TDFoundationExtensions)
 +(instancetype) td_errorWithDescription:(NSString*)description;
 +(instancetype) td_errorWithDescription:(NSString*)description failureReason:(NSString*)failureReason;
++(instancetype) td_userCancelledError;
 @end
 
 void TDFillError(NSError** outError, NSString* description, NSString* failureReason);
