@@ -7,7 +7,7 @@
 #import "TDNinePart.h"
 
 static NSImage* TDCroppedImage(NSImage* image, NSRect frame) {
-    return [NSImage imageWithSize:frame.size flipped:image.isFlipped drawingHandler:^BOOL(NSRect dstRect) {
+    return [NSImage imageWithSize:frame.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
         [image drawInRect:dstRect
                  fromRect:frame
                 operation:NSCompositeCopy
