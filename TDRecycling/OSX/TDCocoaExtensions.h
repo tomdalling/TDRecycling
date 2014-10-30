@@ -18,3 +18,8 @@
 @interface NSColor(TDCocoaExtensions)
 +(instancetype) td_fromHex:(NSString*)hex;
 @end
+
+@interface NSSavePanel(TDCocoaExtensions)
+-(void) td_saveCurrentState;
+-(void) td_loadLastState;
+@end

@@ -52,3 +52,38 @@
                                  alpha:1.0];
 }
 @end
+
+@implementation NSSavePanel(TDCocoaExtensions)
+
+-(NSString*) td_lastDirectoryPrefKey {
+    return [self.frameAutosaveName stringByAppendingString:@".lastDirectory"];
+}
+
+-(NSString*) td_lastFrameSizePrefKey {
+    return [self.frameAutosaveName stringByAppendingString:@".lastFrameSize"];
+}
+
+-(void) td_saveCurrentState {
+    NSParameterAssert(self.frameAutosaveName);
+
+    [[NSUserDefaults standardUserDefaults] setObject:self.directoryURL.path
+                                              forKey:self.td_lastDirectoryPrefKey];
+
+    NSView* contentView = self.contentView;
+    [[NSUserDefaults standardUserDefaults] setObject:NSStringFromSize(contentView.frame.size)
+                                              forKey:self.td_lastFrameSizePrefKey];
+}
+
+-(void) td_loadLastState {
+    NSParameterAssert(self.frameAutosaveName);
+
+    NSString* lastDir = [[NSUserDefaults standardUserDefaults] objectForKey:self.td_lastDirectoryPrefKey];
+    if(lastDir)
+        self.directoryURL = [NSURL fileURLWithPath:lastDir];
+
+    NSString* lastFrameSize = [[NSUserDefaults standardUserDefaults] objectForKey:self.td_lastFrameSizePrefKey];
+    if(lastFrameSize)
+        [self setContentSize:NSSizeFromString(lastFrameSize)];
+}
+
+@end
