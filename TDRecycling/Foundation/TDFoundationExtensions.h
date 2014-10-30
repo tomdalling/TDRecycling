@@ -31,6 +31,8 @@
 
 -(NSArray*) td_replaceObjectsAtIndexes:(NSIndexSet*)indexes with:(NSArray*)replacements;
 -(NSArray*) td_replaceObjectAtIndex:(NSUInteger)idx with:(id)replacement;
+
+-(NSArray*) td_sortedByKey:(NSString*)key ascending:(BOOL)ascending;
 @end
 
 @interface NSDictionary(TDFoundationExtensions)

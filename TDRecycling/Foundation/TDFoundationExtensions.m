@@ -7,6 +7,10 @@
 #import "TDFoundationExtensions.h"
 @import ObjectiveC.runtime;
 
+@protocol TDComparable
+-(NSComparisonResult) compare:(id)other;
+@end
+
 @implementation NSArray(TDFoundationExtensions)
 
 -(NSArray*) td_map:(id(^)(id object))mapBlock
@@ -166,6 +170,15 @@
     return [self td_replaceObjectsAtIndexes:[NSIndexSet indexSetWithIndex:idx] with:@[replacement]];
 }
 
+-(NSArray*) td_sortedByKey:(NSString*)key ascending:(BOOL)ascending {
+    return [self sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        id left = ascending ? obj1 : obj2;
+        id right = ascending ? obj2 : obj1;
+        id<TDComparable> leftProp = [left valueForKey:key];
+        id<TDComparable> rightProp = [right valueForKey:key];
+        return [leftProp compare:rightProp];
+    }];
+}
 @end
 
 @implementation NSDictionary(TDFoundationExtensions)
