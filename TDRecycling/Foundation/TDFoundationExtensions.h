@@ -37,6 +37,7 @@
 
 @interface NSDictionary(TDFoundationExtensions)
 -(NSArray*) td_map:(id(^)(id key, id value))mapBlock;
+-(instancetype) td_merge:(NSDictionary*)other;
 @end
 
 @interface NSObject(TDFoundationExtensions)
@@ -66,6 +67,10 @@ void TDFillError(NSError** outError, NSString* description, NSString* failureRea
 @interface NSDateFormatter(TDFoundationExtensions)
 +(instancetype) td_iso8601DateFormatter;
 @end
+
+CGRect TDRectFitLetterbox(CGRect bounds, CGSize inner);
+CGRect TDRectFitCrop(CGRect bounds, CGSize inner);
+
 
 #define TDMin(a,b) ({ \
     __typeof__(a) _a = (a); \

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'TDRecycling'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = "Tom Dalling's personal collection of recycled Objective-C code"
   s.description      = "Tom Dalling's personal collection of recycled Objective-C code"
   s.homepage         = "https://github.com/tomdalling/TDRecycling"

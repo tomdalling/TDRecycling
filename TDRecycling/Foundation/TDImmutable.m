@@ -5,6 +5,7 @@
 //
 
 #import "TDImmutable.h"
+#import "TDFoundationExtensions.h"
 @import ObjectiveC.runtime;
 
 static void* const TDPropertiesDictKey = (void* const)&TDPropertiesDictKey;
@@ -51,22 +52,11 @@ static NSDictionary* TDBuildPropertiesDict(Class klass) {
     return propertiesDict;
 }
 
-static NSDictionary* TDDictMerge(NSDictionary* into, NSDictionary* from) {
-    if(into.count == 0)
-        return from;
-
-    NSMutableDictionary* result = [into mutableCopy];
-    [from enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        result[key] = obj;
-    }];
-    return result;
-}
-
 @implementation TDImmutable
 
 -(id) initWithProperties:(NSDictionary*)properties {
     if((self = [super init])){
-        NSDictionary* propsWithDefaults = TDDictMerge(self.class.defaultProperties, properties);
+        NSDictionary* propsWithDefaults = [self.class.defaultProperties td_merge:properties];
         [propsWithDefaults enumerateKeysAndObjectsUsingBlock:^(NSString* property, id value, BOOL *stop) {
             [self _setProperty:property toValue:value];
         }];
@@ -107,7 +97,7 @@ static NSDictionary* TDDictMerge(NSDictionary* into, NSDictionary* from) {
 }
 
 -(instancetype) withProperties:(NSDictionary*)changedProperties {
-    return [[[self class] alloc] initWithProperties:TDDictMerge(self.properties, changedProperties)];
+    return [[[self class] alloc] initWithProperties:[self.properties td_merge:changedProperties]];
 }
 
 -(instancetype) withPropertiesAndValues:(id)firstPropertyName, ... {

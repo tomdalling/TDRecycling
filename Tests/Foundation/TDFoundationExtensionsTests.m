@@ -151,3 +151,38 @@
 }
 
 @end
+
+@interface TDRect_TDFoundationExtensions_Tests : XCTestCase
+@end
+@implementation TDRect_TDFoundationExtensions_Tests
+
+- (void)testFitLetterboxLeftRightGap {
+    //put gaps on left/right of 4:3 to fit 16:9
+    CGRect result = TDRectFitLetterbox(CGRectMake(0, 0, 16, 9), CGSizeMake(4, 3));
+    CGRect expected = CGRectMake(2, 0, 12, 9);
+    XCTAssert(CGRectEqualToRect(result, expected));
+}
+
+- (void)testFitLetterboxTopBottomGap {
+    //puts gaps on top/bottom of 16:9 to fit 4:3
+    CGRect result = TDRectFitLetterbox(CGRectMake(0, 0, 4, 3), CGSizeMake(16, 9));
+    CGRect expected = CGRectMake(0, 0.375, 4, 2.25);
+    XCTAssert(CGRectEqualToRect(result, expected));
+}
+
+
+-(void) testFitCropTopBottom {
+    //crop top/bottom of 4:3 to fit 16:9
+    CGRect result = TDRectFitCrop(CGRectMake(0, 0, 16, 9), CGSizeMake(4, 3));
+    CGRect expected = CGRectMake(0, 0.375, 4, 2.25);
+    XCTAssert(CGRectEqualToRect(result, expected));
+}
+
+-(void) testFitCropLeftRight {
+    //crop left/right of 16:9 to fit 4:3
+    CGRect result = TDRectFitCrop(CGRectMake(0, 0, 4, 3), CGSizeMake(16, 9));
+    CGRect expected = CGRectMake(2, 0, 12, 9);
+    XCTAssert(CGRectEqualToRect(result, expected));
+}
+
+@end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E22C59331A0DE5AD00E907FA /* TDAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = E22C59311A0DE5AD00E907FA /* TDAssert.h */; };
+		E22C59341A0DE5AD00E907FA /* TDAssert.m in Sources */ = {isa = PBXBuildFile; fileRef = E22C59321A0DE5AD00E907FA /* TDAssert.m */; };
 		E230059C19A2FE2F002BA630 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E230059B19A2FE2F002BA630 /* XCTest.framework */; };
 		E23005A019A2FE2F002BA630 /* RecyclingFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E230058319A2FE2F002BA630 /* RecyclingFoundation.framework */; };
 		E26BE1BE19A714E0003CB6E4 /* RecyclingFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E230058319A2FE2F002BA630 /* RecyclingFoundation.framework */; };
@@ -50,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E22C59311A0DE5AD00E907FA /* TDAssert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAssert.h; sourceTree = "<group>"; };
+		E22C59321A0DE5AD00E907FA /* TDAssert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAssert.m; sourceTree = "<group>"; };
 		E230058319A2FE2F002BA630 /* RecyclingFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RecyclingFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E230059A19A2FE2F002BA630 /* RecyclingFoundationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecyclingFoundationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E230059B19A2FE2F002BA630 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -162,6 +166,8 @@
 				E26BE1D119A71680003CB6E4 /* TDImmutable.m */,
 				E26BE1D219A71680003CB6E4 /* TDUnbufferedChannel.h */,
 				E26BE1D319A71680003CB6E4 /* TDUnbufferedChannel.m */,
+				E22C59311A0DE5AD00E907FA /* TDAssert.h */,
+				E22C59321A0DE5AD00E907FA /* TDAssert.m */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -217,6 +223,7 @@
 				E26BE1E719A71686003CB6E4 /* TDUnbufferedChannel.h in Headers */,
 				E26BE1E219A71686003CB6E4 /* All.h in Headers */,
 				E26BE1E319A71686003CB6E4 /* TDFoundationExtensions.h in Headers */,
+				E22C59331A0DE5AD00E907FA /* TDAssert.h in Headers */,
 				E26BE1E519A71686003CB6E4 /* TDImmutable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -376,6 +383,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E22C59341A0DE5AD00E907FA /* TDAssert.m in Sources */,
 				E26BE1E419A71686003CB6E4 /* TDFoundationExtensions.m in Sources */,
 				E26BE1E619A71686003CB6E4 /* TDImmutable.m in Sources */,
 				E26BE1E119A71686003CB6E4 /* TDChannel.m in Sources */,

@@ -189,6 +189,17 @@
     }];
     return mapped;
 }
+
+-(instancetype) td_merge:(NSDictionary*)other {
+    if(other.count == 0)
+        return self;
+    
+    NSMutableDictionary* merged = [self mutableCopy];
+    [other enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        merged[key] = obj;
+    }];
+    return merged;
+}
 @end
 
 @implementation NSNotificationCenter(TDFoundationExtensions)
@@ -394,3 +405,39 @@ void TDFillError(NSError** outError, NSString* description, NSString* failureRea
 }
 
 @end
+
+CGRect TDRectFitLetterbox(CGRect bounds, CGSize inner) {
+    CGFloat boundsAspect = bounds.size.width / bounds.size.height;
+    CGFloat aspect = inner.width / inner.height;
+    CGSize size = CGSizeZero;
+
+    if(aspect < boundsAspect)
+        size = CGSizeMake(bounds.size.height * aspect, bounds.size.height);
+    else if(aspect > boundsAspect)
+        size = CGSizeMake(bounds.size.width, bounds.size.width / aspect);
+    else
+        size = bounds.size;
+
+    return CGRectMake(bounds.origin.x + (bounds.size.width - size.width)/2.0,
+                      bounds.origin.y + (bounds.size.height - size.height)/2.0,
+                      size.width,
+                      size.height);
+}
+
+CGRect TDRectFitCrop(CGRect bounds, CGSize inner) {
+    CGFloat boundsAspect = bounds.size.width / bounds.size.height;
+    CGFloat aspect = inner.width / inner.height;
+    CGSize size = CGSizeZero;
+
+    if(aspect < boundsAspect)
+        size = CGSizeMake(inner.width, inner.width / boundsAspect);
+    else if(aspect > boundsAspect)
+        size = CGSizeMake(inner.height * boundsAspect, inner.height);
+    else
+        size = inner;
+
+    return CGRectMake(bounds.origin.x + (inner.width - size.width) / 2.0,
+                      bounds.origin.y + (inner.height - size.height) / 2.0,
+                      size.width,
+                      size.height);
+}
