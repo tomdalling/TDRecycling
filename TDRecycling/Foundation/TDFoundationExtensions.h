@@ -70,6 +70,9 @@ void TDFillError(NSError** outError, NSString* description, NSString* failureRea
 
 CGRect TDRectFitLetterbox(CGRect bounds, CGSize inner);
 CGRect TDRectFitCrop(CGRect bounds, CGSize inner);
+CGPoint TDRectCenterSize(CGRect bounds, CGSize size);
+CGPoint TDRectCenter(CGRect rect);
+
 
 
 #define TDMin(a,b) ({ \

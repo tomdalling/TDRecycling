@@ -418,10 +418,10 @@ CGRect TDRectFitLetterbox(CGRect bounds, CGSize inner) {
     else
         size = bounds.size;
 
-    return CGRectMake(bounds.origin.x + (bounds.size.width - size.width)/2.0,
-                      bounds.origin.y + (bounds.size.height - size.height)/2.0,
-                      size.width,
-                      size.height);
+    CGRect result = CGRectZero;
+    result.origin = TDRectCenterSize(bounds, size);
+    result.size = size;
+    return result;
 }
 
 CGRect TDRectFitCrop(CGRect bounds, CGSize inner) {
@@ -436,8 +436,18 @@ CGRect TDRectFitCrop(CGRect bounds, CGSize inner) {
     else
         size = inner;
 
-    return CGRectMake(bounds.origin.x + (inner.width - size.width) / 2.0,
-                      bounds.origin.y + (inner.height - size.height) / 2.0,
-                      size.width,
-                      size.height);
+    CGRect result = CGRectZero;
+    result.origin = TDRectCenterSize(bounds, size);
+    result.size = size;
+    return result;
+}
+
+CGPoint TDRectCenterSize(NSRect bounds, CGSize size) {
+    return CGPointMake(bounds.origin.x + (bounds.size.width - size.width)/2.0,
+                       bounds.origin.y + (bounds.size.height - size.height)/2.0);
+}
+
+CGPoint TDRectCenter(CGRect rect) {
+    return NSMakePoint(rect.origin.x + rect.size.width/2.0,
+                       rect.origin.y + rect.size.height/2.0);
 }
