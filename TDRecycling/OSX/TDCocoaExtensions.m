@@ -53,6 +53,21 @@
 }
 @end
 
+@implementation NSView(TDCocoaExtensions)
+-(void) td_animateToAlpha:(CGFloat)alpha onFinish:(void(^)(void))onFinish {
+    self.hidden = NO;
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setCompletionHandler:^{
+        self.hidden = (alpha == 0.0);
+        if(onFinish){
+            onFinish();
+        }
+    }];
+    [[self animator] setAlphaValue:alpha];
+    [NSAnimationContext endGrouping];
+}
+@end
+
 @implementation NSSavePanel(TDCocoaExtensions)
 
 -(NSString*) td_lastDirectoryPrefKey {

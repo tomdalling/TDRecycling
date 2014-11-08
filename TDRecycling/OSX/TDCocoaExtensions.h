@@ -19,6 +19,10 @@
 +(instancetype) td_fromHex:(NSString*)hex;
 @end
 
+@interface NSView(TDCocoaExtensions)
+-(void) td_animateToAlpha:(CGFloat)alpha onFinish:(void(^)(void))onFinish;
+@end
+
 @interface NSSavePanel(TDCocoaExtensions)
 -(void) td_saveCurrentState;
 -(void) td_loadLastState;
