@@ -4,7 +4,7 @@
 // Copyright 2014 Tom Dalling. All rights reserved.
 //
 
-#import "TDFoundationExtensions.h"
+#import "All.h"
 @import ObjectiveC.runtime;
 
 @protocol TDComparable
@@ -152,7 +152,7 @@
 }
 
 -(NSArray*) td_replaceObjectsAtIndexes:(NSIndexSet*)indexes with:(NSArray*)replacements {
-    NSParameterAssert(indexes.count == replacements.count);
+    TDAssert(indexes.count == replacements.count);
 
     NSMutableArray* result = [self mutableCopy];
 
@@ -272,7 +272,7 @@ static void* const TDNotiObservationListKey = (void*const)&TDNotiObservationList
 
 -(void) td_stopObserving:(id)observation
 {
-    NSParameterAssert([observation isKindOfClass:[TDRememberedObservation class]]);
+    TDAssert([observation isKindOfClass:[TDRememberedObservation class]]);
     TDRememberedObservation* remembered = (TDRememberedObservation*)observation;
     [[NSNotificationCenter defaultCenter] removeObserver:remembered.observer];
     [[self _td_notiObservationList] removeObject:remembered];
@@ -368,7 +368,7 @@ void TDFillError(NSError** outError, NSString* description, NSString* failureRea
         NSString* segmentTail = nil;
         [scanner scanCharactersFromSet:uppercase intoString:&segmentHead];
         [scanner scanUpToCharactersFromSet:uppercase intoString:&segmentTail];
-        NSParameterAssert(segmentHead.length > 0);
+        TDAssert(segmentHead.length > 0);
 
         NSString* segment = [[segmentHead lowercaseString] stringByAppendingString:segmentTail];
         [segments addObject:segment];
@@ -384,7 +384,7 @@ void TDFillError(NSError** outError, NSString* description, NSString* failureRea
     while(!scanner.isAtEnd){
         NSString* segment = nil;
         BOOL foundSegment = [scanner scanUpToString:@"-" intoString:&segment];
-        NSParameterAssert(foundSegment);
+        TDAssert(foundSegment);
         [output appendString:[[segment substringToIndex:1] uppercaseString]];
         [output appendString:[segment substringFromIndex:1]];
         [scanner scanString:@"-" intoString:NULL];

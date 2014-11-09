@@ -35,7 +35,7 @@
     if(hex.length == 7)
         hex = [hex substringFromIndex:1]; //chop off leading # character
 
-    NSParameterAssert(hex.length == 6);
+    TDAssert(hex.length == 6);
 
     NSString* rs = [hex substringWithRange:NSMakeRange(0, 2)];
     NSString* gs = [hex substringWithRange:NSMakeRange(2, 2)];
@@ -106,7 +106,7 @@
 }
 
 -(void) td_saveCurrentState {
-    NSParameterAssert(self.frameAutosaveName);
+    TDAssert(self.frameAutosaveName);
 
     [[NSUserDefaults standardUserDefaults] setObject:self.directoryURL.path
                                               forKey:self.td_lastDirectoryPrefKey];
@@ -117,7 +117,7 @@
 }
 
 -(void) td_loadLastState {
-    NSParameterAssert(self.frameAutosaveName);
+    TDAssert(self.frameAutosaveName);
 
     NSString* lastDir = [[NSUserDefaults standardUserDefaults] objectForKey:self.td_lastDirectoryPrefKey];
     if(lastDir)
