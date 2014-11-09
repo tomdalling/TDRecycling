@@ -5,7 +5,7 @@
 //
 
 #define TDAssert(condition) \
-    _TDAssert((condition), #condition, __PRETTY_FUNCTION__, __FILE__, __LINE__);
+    _TDAssert(!!(condition), #condition, __PRETTY_FUNCTION__, __FILE__, __LINE__);
 
 #define TDAssertNeverExecuted() \
     _TDAssertionFailed("TDAssertNeverExecuted was executed", __PRETTY_FUNCTION__, __FILE__, __LINE__); \
