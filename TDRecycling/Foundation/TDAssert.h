@@ -4,11 +4,19 @@
 // Copyright 2014 Tom Dalling. All rights reserved.
 //
 
+#ifdef TD_ASSERT_DEBUG
+#   define TD_ASSERT_CURRENT_FILE __FILE__
+#   define TD_ASSERT_CURRENT_FUNC __PRETTY_FUNCTION__
+#else
+#   define TD_ASSERT_CURRENT_FILE "hidden"
+#   define TD_ASSERT_CURRENT_FUNC "hidden"
+#endif
+
 #define TDAssert(condition) \
-    _TDAssert(!!(condition), #condition, __PRETTY_FUNCTION__, __FILE__, __LINE__);
+    _TDAssert(!!(condition), #condition, TD_ASSERT_CURRENT_FUNC, TD_ASSERT_CURRENT_FILE, __LINE__)
 
 #define TDAssertNeverExecuted() \
-    _TDAssertionFailed("TDAssertNeverExecuted was executed", __PRETTY_FUNCTION__, __FILE__, __LINE__); \
+    _TDAssertionFailed("TDAssertNeverExecuted was executed", TD_ASSERT_CURRENT_FUNC, TD_ASSERT_CURRENT_FILE, __LINE__)
 
 int _TDAssert(int condition,
               const char* conditionStr,
