@@ -54,17 +54,44 @@
 @end
 
 @implementation NSView(TDCocoaExtensions)
--(void) td_animateToAlpha:(CGFloat)alpha onFinish:(void(^)(void))onFinish {
+-(void) td_fadeToAlpha:(CGFloat)alpha onFinish:(void(^)(void))onFinish {
     self.hidden = NO;
     [NSAnimationContext beginGrouping];
     [[NSAnimationContext currentContext] setCompletionHandler:^{
-        self.hidden = (alpha == 0.0);
-        if(onFinish){
-            onFinish();
-        }
+        self.hidden = (alpha <= 0.0);
+        if(onFinish) onFinish();
     }];
     [[self animator] setAlphaValue:alpha];
     [NSAnimationContext endGrouping];
+}
+
+-(void) td_fillWithView:(NSView*)view {
+    TDAssert(view);
+
+    view.frame = self.bounds;
+    [view setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self addSubview:view];
+
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
+                                             options:0
+                                             metrics:nil
+                                               views:NSDictionaryOfVariableBindings(view)]];
+
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|"
+                                             options:0
+                                             metrics:nil
+                                               views:NSDictionaryOfVariableBindings(view)]];
+
+    [self setNeedsDisplay:YES];
+}
+
+-(void) td_fillWithViewController:(NSViewController*)viewController {
+    [self td_fillWithView:viewController.view];
+    viewController.view.nextResponder = viewController;
+    viewController.nextResponder = self;
 }
 @end
 

@@ -9,8 +9,7 @@
 /* Begin PBXBuildFile section */
 		E22C59331A0DE5AD00E907FA /* TDAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = E22C59311A0DE5AD00E907FA /* TDAssert.h */; };
 		E22C59341A0DE5AD00E907FA /* TDAssert.m in Sources */ = {isa = PBXBuildFile; fileRef = E22C59321A0DE5AD00E907FA /* TDAssert.m */; };
-		E22C59371A0DF56C00E907FA /* TDPlaceholderView.h in Headers */ = {isa = PBXBuildFile; fileRef = E22C59351A0DF56C00E907FA /* TDPlaceholderView.h */; };
-		E22C59381A0DF56C00E907FA /* TDPlaceholderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E22C59361A0DF56C00E907FA /* TDPlaceholderView.m */; };
+		E22C59391A0F13C500E907FA /* TDAssert.m in Sources */ = {isa = PBXBuildFile; fileRef = E22C59321A0DE5AD00E907FA /* TDAssert.m */; };
 		E230059C19A2FE2F002BA630 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E230059B19A2FE2F002BA630 /* XCTest.framework */; };
 		E23005A019A2FE2F002BA630 /* RecyclingFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E230058319A2FE2F002BA630 /* RecyclingFoundation.framework */; };
 		E26BE1BE19A714E0003CB6E4 /* RecyclingFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E230058319A2FE2F002BA630 /* RecyclingFoundation.framework */; };
@@ -56,8 +55,6 @@
 /* Begin PBXFileReference section */
 		E22C59311A0DE5AD00E907FA /* TDAssert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAssert.h; sourceTree = "<group>"; };
 		E22C59321A0DE5AD00E907FA /* TDAssert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAssert.m; sourceTree = "<group>"; };
-		E22C59351A0DF56C00E907FA /* TDPlaceholderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDPlaceholderView.h; sourceTree = "<group>"; };
-		E22C59361A0DF56C00E907FA /* TDPlaceholderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDPlaceholderView.m; sourceTree = "<group>"; };
 		E230058319A2FE2F002BA630 /* RecyclingFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RecyclingFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E230059A19A2FE2F002BA630 /* RecyclingFoundationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecyclingFoundationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E230059B19A2FE2F002BA630 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -179,8 +176,6 @@
 		E26BE1D419A71680003CB6E4 /* OSX */ = {
 			isa = PBXGroup;
 			children = (
-				E22C59351A0DF56C00E907FA /* TDPlaceholderView.h */,
-				E22C59361A0DF56C00E907FA /* TDPlaceholderView.m */,
 				E26BE1D519A71680003CB6E4 /* All.h */,
 				E26BE1D619A71680003CB6E4 /* TDCocoaExtensions.h */,
 				E26BE1D719A71680003CB6E4 /* TDCocoaExtensions.m */,
@@ -241,7 +236,6 @@
 				E26BE1EA19A7168A003CB6E4 /* TDCocoaExtensions.h in Headers */,
 				E26BE1E919A7168A003CB6E4 /* All.h in Headers */,
 				E26BE1F319A726E9003CB6E4 /* TDNinePart.h in Headers */,
-				E22C59371A0DF56C00E907FA /* TDPlaceholderView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,8 +408,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E26BE1F419A726E9003CB6E4 /* TDNinePart.m in Sources */,
-				E22C59381A0DF56C00E907FA /* TDPlaceholderView.m in Sources */,
 				E26BE1EB19A7168A003CB6E4 /* TDCocoaExtensions.m in Sources */,
+				E22C59391A0F13C500E907FA /* TDAssert.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

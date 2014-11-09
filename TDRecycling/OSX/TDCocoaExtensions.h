@@ -20,7 +20,9 @@
 @end
 
 @interface NSView(TDCocoaExtensions)
--(void) td_animateToAlpha:(CGFloat)alpha onFinish:(void(^)(void))onFinish;
+-(void) td_fadeToAlpha:(CGFloat)alpha onFinish:(void(^)(void))onFinish;
+-(void) td_fillWithView:(NSView*)view;
+-(void) td_fillWithViewController:(NSViewController*)viewController;
 @end
 
 @interface NSSavePanel(TDCocoaExtensions)
