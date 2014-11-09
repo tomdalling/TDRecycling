@@ -437,7 +437,7 @@ CGRect TDRectFitCrop(CGRect bounds, CGSize inner) {
         size = inner;
 
     CGRect result = CGRectZero;
-    result.origin = TDRectCenterSize(bounds, size);
+    result.origin = TDRectCenterSize(CGRectMake(0, 0, inner.width, inner.height), size);
     result.size = size;
     return result;
 }
