@@ -26,6 +26,6 @@
 @end
 
 @interface NSSavePanel(TDCocoaExtensions)
--(void) td_saveCurrentState;
--(void) td_loadLastState;
+-(void) td_saveCurrentState; //useless in the OS X sandbox
+-(void) td_loadLastState; //useless in the OS X sandbox
 @end
